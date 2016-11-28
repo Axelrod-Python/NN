@@ -1,11 +1,12 @@
 import csv
-import sys
+
+from keras.optimizers import Adagrad, RMSprop
 
 import axelrod as axl
 from knn_strategy import KNN
 
 from generate_data import yield_data
-from train import train_model, test_model
+from train import train_model, test_model, load_model, save_model
 
 def process_data(filename, outfilename):
     with open(outfilename, 'w') as outputfile:
@@ -55,26 +56,26 @@ if __name__ == "__main__":
     # create_interactions(s)
 
 
-    epochs = 2
+    epochs = 1
 
-    for i in range(0, 5):
+    for i in range(0, 10):
         # Generate new data
         create_interactions(str(i))
         # Load
         model = load_model(name="model")
         model.compile(loss='mse',
-           optimizer=Adagrad(lr=0.01, epsilon=1e-08))
+           optimizer=RMSprop())
         # Train
         train_filename = "/ssd/train_extra.csv{}".format(i)
-        %time model, losses = train_model(model, epochs, train_filename, nb_epoch=2)
+        model, losses = train_model(model, epochs, train_filename, nb_epoch=2)
         # Test
         print("MSE", losses[-1])
         test_filename = "/ssd/test_extra.csv{}".format(i)
-        %time m = test_model(model, test_filename)
+        m = test_model(model, test_filename)
         # Save model
         save_model(model, name="model")
-        if m > 0.93:
-            break
+        # if m > 0.93:
+        #     break
 
 
 

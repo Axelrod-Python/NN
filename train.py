@@ -98,7 +98,7 @@ def test_model(model, test_filename):
     pred_counter = Counter()
     prob_counter = Counter()
 
-    for X, y in BatchGenerator(test_filename, batch_size=64*1024):
+    for X, y in BatchGenerator(test_filename, batch_size=1024):
         # Model evaluation
         pred_y = model.predict_proba(X, verbose=False)
         preds = model.predict_classes(X, verbose=False)

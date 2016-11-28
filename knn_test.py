@@ -44,7 +44,7 @@ def main():
     players.append(KNN)
     players = [s() for s in players]
 
-    tournament = axl.Tournament(players=players, repetitions=20)
+    tournament = axl.Tournament(players=players, repetitions=60)
     results = tournament.play()
 
     plot = axl.Plot(results)
